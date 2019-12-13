@@ -1,4 +1,4 @@
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 beg = 40
 print("Введите числовую полседовательность")
 N = list(map(int, input().split()))
@@ -6,6 +6,7 @@ print("Выберите способ кодирования", "NRZ", "NRZI", "MA
 im = Image.new('RGB', (beg + 64*len(N)+2, 13), color='white')
 draw_s = ImageDraw.Draw(im)
 
+font = ImageFont.truetype('minreg.ttf', 10)
 
 def polyline_vertically(xy, color, width1=1):
     # функция предназначенная для рисования пунктирных линий по вертикали
@@ -47,7 +48,7 @@ def nrz(code):
 
 def nrzi(code):
     # вывод текста в начале картинки
-    draw_s.text((1, 1), text="NRZI", fill="black", width=1)
+    draw_s.text((1, 1), text="NRZI", fill="black", width=1, font=font)
     point = [beg, im.size[1] - 2]
     # заполняю предыдущее значенние иверсией первого
     ls = not int(('0' * (8 - len((str(bin(code[0])))[2:])) + (str(bin(code[0])))[2:])[0])
@@ -128,3 +129,4 @@ elif tmp == "MANCH":
     manch(N)
     print("Complete")
 im.save('digital_signal.png')
+im.show()
