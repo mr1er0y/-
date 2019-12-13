@@ -127,4 +127,4 @@ elif tmp == "NRZI":
 elif tmp == "MANCH":
     manch(N)
     print("Complete")
-im.save('digital_signal;.png')
+im.save('digital_signal.png')
