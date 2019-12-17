@@ -33,8 +33,8 @@ def polyline_horizon(draw_im, xy, color='black', width1=1):
 
 def elka(img_n, draw_n):
     """
-    :param img_n:
-    :param draw_n:
+    :param img_n: изображения
+    :param draw_n: рисовалка
     функция предназначена для рисования верхней и нижней пунктирной линии с чередующимся красным и зеленым цветом
     """
     polyline_horizon(draw_n, [(beg, 0), (img_n.size[0], 0)], 'red', 1)
@@ -183,4 +183,5 @@ elif tmp == "NRZI":
 elif tmp == "MANCH":
     manch(N)
     print("Complete")
-
+else:
+    print("Erorr")
