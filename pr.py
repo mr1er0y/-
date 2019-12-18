@@ -1,5 +1,5 @@
 from PIL import Image, ImageDraw, ImageFont
-
+from dec import decode_img
 # выделение места под надпись на картинке
 beg = 40
 # шрифт текста на картинке
@@ -52,7 +52,7 @@ def nrz(code):
         биты 0 представляются нулевым напряжением 0 (В);
         биты 1 представляются значением U (В)
     """
-    im = Image.new('RGB', (beg + 34 * len(N) + 1, 13), color='white')
+    im = Image.new('RGB', (beg + 32 * len(N), 13), color='white')
     draw_s = ImageDraw.Draw(im)
     elka(im, draw_s)
     # вывод текста в начале картики
@@ -75,7 +75,7 @@ def nrz(code):
             draw_s.line([(point[0], point[1]), (point[0] + 4, point[1])], fill="black",  width=1)
             point[0] += 4
     im.save('digital_signal.png')
-    im.show()
+    # im.show()
 
 
 def nrzi(code):
@@ -87,38 +87,40 @@ def nrzi(code):
      не возвращается к нулю в течение такта.
      То есть смена сигнала происходит при передаче единицы, а передача нуля не приводит к изменению напряжения
     """
-    im = Image.new('RGB', (beg + 34 * len(N) + 1, 13), color='white')
+    im = Image.new('RGB', (beg + 32 * len(N) , 13), color='white')
     draw_s = ImageDraw.Draw(im)
     elka(im, draw_s)
     # вывод текста в начале картинки
     draw_s.text((1, 1), text="NRZI", fill="black", width=1, font=font)
     point = [beg, im.size[1] - 2]
     # заполняю предыдущее значенние иверсией первого
-    ls = not int(('0' * (8 - len((str(bin(code[0])))[2:])) + (str(bin(code[0])))[2:])[0])
+    last_s = not int(('0' * (8 - len((str(bin(code[0])))[2:])) + (str(bin(code[0])))[2:])[0])
     sm = 0
     for i in code:
         t = (str(bin(i)))[2:]
         t = '0' * (8 - len(t)) + t
-        print(t)
+        # print(t)
         # polyline_vertically([(point[0], 2), (point[0], im.size[1] - 2)], 'grey')
         for s in t:
+            no = int(s)
             # ищем 1 в последовательность и инвертируем ее
             if sm:
-                s = not int(s)
-            if not int(s) and ls:
+                no = not int(s)
+
+            if not no and last_s:
                 draw_s.line([(point[0], point[1]), (point[0], im.size[1] - 2)], fill="black", width=1)
                 point[1] = im.size[1] - 2
-            elif int(s) and not ls:
+            elif no and not last_s:
                 point[1] = 1
                 draw_s.line([(point[0], point[1]), (point[0], im.size[1] - 2)], fill="black", width=1)
 
-            ls = int(s)
+            last_s = no
             draw_s.line([(point[0], point[1]), (point[0] + 4, point[1])], fill="black", width=1)
             point[0] += 4
             if int(s):
                 sm = not sm
     im.save('digital_signal.png')
-    im.show()
+    # im.show()
 
 
 def manch(code):
@@ -139,7 +141,7 @@ def manch(code):
     for i in code:
         t = (str(bin(i)))[2:]
         t = '0' * (8 - len(t)) + t
-        print(t)
+        # print(t)
         for s in t:
             if int(s):
                 if point[1] != 1:
@@ -168,21 +170,25 @@ def manch(code):
                 draw_s.line([(point[0], point[1]), (point[0] + 4, point[1])], fill="black", width=1)
                 point[0] += 4
     im.save('digital_signal.png')
-    im.show()
+    # im.show()
 
 
-print("Введите числовую полседовательность")
-N = list(map(int, input().split()))
-print("Выберите способ кодирования", "NRZ", "NRZI", "MANCH", sep='\n')
-tmp = input()
-if tmp == "NRZ":
-    nrz(N)
-    print("Complete")
-elif tmp == "NRZI":
-    nrzi(N)
-    print("Complete")
-elif tmp == "MANCH":
-    manch(N)
-    print("Complete")
-else:
-    print("Erorr")
+# print("Введите числовую полседовательность")
+# N = list(map(int, input().split()))
+# print("Выберите способ кодирования", "NRZ", "NRZI", "MANCH", sep='\n')
+tk = ['NRZ', 'NRZI', 'MANCH']
+N = [i for i in range(255)]
+for tmp in tk:
+    if tmp == "NRZ":
+        nrz(N)
+        print("Complete")
+    elif tmp == "NRZI":
+        nrzi(N)
+        print("Complete")
+    elif tmp == "MANCH":
+        manch(N)
+        print("Complete")
+    else:
+        print("Erorr")
+    ng = Image.open('digital_signal.png')
+    print(tmp, N == decode_img(ng, tmp))
