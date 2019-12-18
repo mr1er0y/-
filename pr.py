@@ -99,7 +99,7 @@ def nrzi(code):
     for i in code:
         t = (str(bin(i)))[2:]
         t = '0' * (8 - len(t)) + t
-        # print(t)
+        print(t)
         # polyline_vertically([(point[0], 2), (point[0], im.size[1] - 2)], 'grey')
         for s in t:
             # ищем 1 в последовательность и инвертируем ее
@@ -115,7 +115,7 @@ def nrzi(code):
             ls = int(s)
             draw_s.line([(point[0], point[1]), (point[0] + 4, point[1])], fill="black", width=1)
             point[0] += 4
-            if s:
+            if int(s):
                 sm = not sm
     im.save('digital_signal.png')
     im.show()
@@ -139,6 +139,7 @@ def manch(code):
     for i in code:
         t = (str(bin(i)))[2:]
         t = '0' * (8 - len(t)) + t
+        print(t)
         for s in t:
             if int(s):
                 if point[1] != 1:
