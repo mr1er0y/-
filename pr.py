@@ -50,7 +50,7 @@ def nrzi(code):
     im = Image.new('RGB', (beg + 32 * len(code) , 13), color='white')
     draw_s = ImageDraw.Draw(im)
     elka(im, draw_s)
-    draw_s.text((1, 1), text="codeRZI", fill="black", width=1, font=font)
+    draw_s.text((1, 1), text="NRZI", fill="black", width=1, font=font)
     point = [beg, im.size[1] - 2]
     last_s = not int(('0' * (8 - len((str(bin(code[0])))[2:])) + (str(bin(code[0])))[2:])[0])
     sm = 0
