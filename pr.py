@@ -52,7 +52,7 @@ def nrz(code):
         биты 0 представляются нулевым напряжением 0 (В);
         биты 1 представляются значением U (В)
     """
-    im = Image.new('RGB', (beg + 32 * len(N), 13), color='white')
+    im = Image.new('RGB', (beg + 32 * len(code), 13), color='white')
     draw_s = ImageDraw.Draw(im)
     elka(im, draw_s)
     # вывод текста в начале картики
@@ -87,7 +87,7 @@ def nrzi(code):
      не возвращается к нулю в течение такта.
      То есть смена сигнала происходит при передаче единицы, а передача нуля не приводит к изменению напряжения
     """
-    im = Image.new('RGB', (beg + 32 * len(N) , 13), color='white')
+    im = Image.new('RGB', (beg + 32 * len(code), 13), color='white')
     draw_s = ImageDraw.Draw(im)
     elka(im, draw_s)
     # вывод текста в начале картинки
@@ -132,7 +132,7 @@ def manch(code):
         биты 0 представляются переходом от низкого напряжения к высокому
         биты 1 представляются переходом от высоко напряжения к низко
     """
-    im = Image.new('RGB', (beg + 64 * len(N) + 1, 13), color='white')
+    im = Image.new('RGB', (beg + 64 * len(code) + 1, 13), color='white')
     draw_s = ImageDraw.Draw(im)
     elka(im, draw_s)
     # вывод текста в начале картинки
@@ -176,19 +176,20 @@ def manch(code):
 # print("Введите числовую полседовательность")
 # N = list(map(int, input().split()))
 # print("Выберите способ кодирования", "NRZ", "NRZI", "MANCH", sep='\n')
-tk = ['NRZ', 'NRZI', 'MANCH']
-N = [i for i in range(255)]
-for tmp in tk:
-    if tmp == "NRZ":
-        nrz(N)
-        print("Complete")
-    elif tmp == "NRZI":
-        nrzi(N)
-        print("Complete")
-    elif tmp == "MANCH":
-        manch(N)
-        print("Complete")
-    else:
-        print("Erorr")
-    ng = Image.open('digital_signal.png')
-    print(tmp, N == decode_img(ng, tmp))
+if __name__ == '__main__':
+    tk = ['NRZ', 'NRZI', 'MANCH']
+    N = [i for i in range(255)]
+    for tmp in tk:
+        if tmp == "NRZ":
+            nrz(N)
+            print("Complete")
+        elif tmp == "NRZI":
+            nrzi(N)
+            print("Complete")
+        elif tmp == "MANCH":
+            manch(N)
+            print("Complete")
+        else:
+            print("Erorr")
+        ng = Image.open('digital_signal.png')
+        print(tmp, N == decode_img(ng, tmp))
